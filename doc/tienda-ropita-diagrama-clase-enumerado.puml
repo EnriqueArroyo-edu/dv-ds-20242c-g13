@@ -1,0 +1,47 @@
+@startuml
+Title Diagrama Clase Tienda Ropita con Enumerado
+class Prenda {
+	descripcion
+	TipoPrenda
+	precioBase
+	EstadoPrenda
+	
+	precioVenta()
+}
+note left of Prenda::precioVenta
+si EstadoPrenda es NUEVO hacer ...
+sino si EstadoPrenda es PROMOCION hacer ...
+sino si EstadoPrenda es LIQUIDACION hacer ...
+sino error
+fin si
+end note
+enum TipoPrenda {
+	SACO
+	CAMISA
+	PANTALON
+}
+enum EstadoPrenda {
+	NUEVO
+	PROMOCION
+	LIQUIDACION
+}
+class Venta {
+	fecha
+	Cliente
+	ItemVenta
+	TotalVenta
+}
+class ItemVenta {
+	Prenda
+	cantidad
+	precioVentaFinal
+}
+class Cliente {
+	nombre
+}
+Prenda --right TipoPrenda
+Prenda --left EstadoPrenda
+Venta -- Cliente
+Venta -- ItemVenta
+ItemVenta -- Prenda
+@enduml

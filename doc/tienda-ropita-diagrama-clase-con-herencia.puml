@@ -1,0 +1,55 @@
+@startuml
+Title Diagrama Clase Tienda Ropita con Herencia
+abstract class Prenda {
+	descripcion
+	TipoPrenda
+	precioBase
+	EstadoPrenda
+	
+	{abstract} precioVenta()
+}
+class PrendaNueva {
+	precioVenta()
+}
+note bottom of PrendaNueva
+precioVenta = en este caso no modifican el precio base.
+end note
+class PrendaPromocion {
+	precioVenta()
+}
+note bottom of PrendaPromocion
+precioVenta = Le resta un valor fijo decidido por el usuario.
+end note
+class PrendaLiquidacion {
+	precioVenta()
+}
+note bottom of PrendaLiquidacion
+precioVenta = Es un 50% del valor del producto.
+end note
+enum TipoPrenda {
+	SACO
+	CAMISA
+	PANTALON
+}
+class Venta {
+	fecha
+	Cliente
+	ItemVenta
+	TotalVenta
+}
+class ItemVenta {
+	Prenda
+	cantidad
+	precioVentaFinal
+}
+class Cliente {
+	nombre
+}
+Prenda --right TipoPrenda
+Prenda <|-- PrendaNueva
+Prenda <|-- PrendaPromocion
+Prenda <|-- PrendaLiquidacion
+Venta -- Cliente
+Venta -- ItemVenta
+ItemVenta -- Prenda
+@enduml

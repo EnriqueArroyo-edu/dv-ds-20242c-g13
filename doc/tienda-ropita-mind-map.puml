@@ -1,0 +1,28 @@
+@startmindmap
+* Tienda Ropita
+** Prenda
+*** Descripción
+*** Tipos
+**** Camisa
+**** Pantalon
+**** Saco
+*** PrecioBase
+*** Estado
+**** Nueva (en este caso no modifican el precio base.)
+**** Promocion (Le resta un valor fijo decidido por el usuario.)
+**** Liquidación (Es un 50% del valor del producto.)
+*** Precio Venta (Calculado de acuerdo al estado de la prenda)
+** Venta
+*** Fecha
+*** Cliente
+**** Nombre
+*** Item Venta
+**** Cantidad
+**** Prenda
+**** Precio Venta Final
+*** Total Venta (Calculado de la suma de todos los Precio Venta Final de los items)
+*** Medio Pago
+**** Efectivo (Cobra Total Venta)
+**** Tarjeta (Cobra Total Venta  (cantidad de cuotas * un coeficiente fijo + 0,01 del valor de cada prenda))
+** Ganancias x día (Calcular las ganancias por día, suma de Total Venta de todas las ventas)
+@endmindmap

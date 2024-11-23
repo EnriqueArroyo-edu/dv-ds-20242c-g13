@@ -1,0 +1,127 @@
+@startuml
+Title Diagrama Clase Tienda Ropita con Strategy
+class Prenda #back:orange {
+	descripcion
+	TipoPrenda
+	precioBase
+	EstadoPrenda
+	EstadoPrendaStrategy
+	
+	+ setEstadoPrenda()
+	+ precioVenta()
+	- asignarEstrategia()
+}
+note right of Prenda::precioVenta
+precioVenta = EstadoPrendaStrategy.precioVenta()
+end note
+note right of Prenda::setEstadoPrenda
+asignarEstragegia
+end note
+note right of Prenda::asignarEstrategia
+si EstadoPrenda es NUEVA asignar PrendaNueva
+sino si EstadoPrenda es PROMOCION asignar PrendaPromocion
+sino si EstadoPrenda es LIQUIDACION asignar PrendaLiquidacion
+end note
+interface EstadoPrendaStrategy {
+	precioVenta()
+}
+class PrendaNueva {
+	precioVenta()
+}
+note bottom of PrendaNueva
+precioVenta = en este caso no modifican el precio base.
+end note
+class PrendaPromocion {
+	precioVenta()
+}
+note bottom of PrendaPromocion
+precioVenta = Le resta un valor fijo decidido por el usuario.
+end note
+class PrendaLiquidacion {
+	precioVenta()
+}
+note bottom of PrendaLiquidacion
+precioVenta = Es un 50% del valor del producto.
+end note
+enum TipoPrenda #back:orange {
+	SACO
+	CAMISA
+	PANTALON
+}
+enum EstadoPrenda {
+	NUEVA
+	PROMOCION
+	LIQUIDACION
+}
+abstract class Venta #back:orange {
+	fecha
+	Cliente
+	ItemVenta itemsVenta
+	totalVenta
+	
+	+ calcularTotal()
+	
+	*{abstract} calcularRecargo()
+	*{abstract} calcularDescuento()
+}
+note right of Venta::calcularTotal
+El método calcularTotal es el template Method ya que para obtener
+el total de la venta tenemos que hacer la sumatoria de itemVenta.calcularTotalItem() de todos los items
++ calcularRecargo() por medio de pago  - calcularDescuento() por medio de pago y
+este resultado se guarda en el totalVenta
+end note
+class VentaEfectivo #back:orange {
+	+ calcularRecargo()
+	+ calcularDescuento()
+}
+class VentaTarjeta #back:orange {
+	cantidadCuotas
+	coeficiente
+	
+	+ calcularRecargo()
+	+ calcularDescuento()
+}
+class VentaMercadoPago {
+	
+	+ calcularRecargo()
+	+ calcularDescuento()
+}
+class VentaMultiplesMedios{
+	montoEfectivo
+	cantidadCoutas
+	coeficiente
+		
+	+ calcularRecargo()
+	+ calcularDescuento()
+}
+class ItemVenta #back:orange {
+	Prenda
+	cantidad
+	precioItemFinal
+	
+	calcularTotalItem()
+}
+note left of ItemVenta::precioVentaFinal
+precioItemFinal = Prenda.precioVenta() esto se determina de acuerdo
+a que estrategia se aplicó
+end note
+note left of ItemVenta::calcularTotalItem
+calcularTotalItem = precioItemFinal * cantidad
+end note
+class Cliente #back:orange {
+	nombre
+}
+Prenda --down TipoPrenda
+Prenda --down EstadoPrenda
+Prenda --left EstadoPrendaStrategy
+EstadoPrendaStrategy <|-- PrendaNueva
+EstadoPrendaStrategy <|-- PrendaPromocion
+EstadoPrendaStrategy <|-- PrendaLiquidacion
+Venta --up Cliente
+Venta --left ItemVenta
+ItemVenta -- Prenda
+Venta <|-- VentaEfectivo
+Venta <|-- VentaTarjeta
+Venta <|-- VentaMercadoPago
+Venta <|-- VentaMultiplesMedios
+@enduml

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8" />
+    <title>Ventas por Fecha</title>
+</head>
+<body>
+<div class="container" align="center">
+    <h1>Ventas de un Día Específico</h1>
+
+    <!-- Formulario para seleccionar fecha -->
+    <form action="/tienda/ventas/por-fecha" method="get">
+        <label for="fecha">Seleccione una fecha:</label>
+        <input type="date" id="fecha" name="fecha" required>
+        <button type="submit" style="background-color: #008CBA; color: white;">Buscar</button>
+    </form>
+    <br />
+
+    <!-- Botón para volver -->
+    <button style="background-color: #008CBA; font-size: medium; font-family: Arial;">
+        <a style="color: white" href="/tienda/ventas/list">Volver al Listado de Ventas</a>
+    </button>
+    <br />
+    <br />
+
+    <!-- Tabla de ventas -->
+    <table border="2" cellpadding="20" style="border-color:black" width="50%">
+        <thead>
+            <tr style="background:gray;color:white">
+                <th colspan="6">Ventas del Día</th>
+            </tr>
+        </thead>
+        <tbody>
+        <tr th:each="venta : ${ventasDelDia}">
+            <table border="2" cellpadding="20" style="border-color:black" width="50%">
+                <thead>
+                    <tr style="background:red;color:white">
+                        <th>Venta ID</th>
+                        <th>Fecha</th>
+                        <th>Cliente Nombre</th>
+                        <th>Cliente Apellido</th>
+                        <th>Importe</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td th:text="${venta.id}">Venta ID</td>
+                        <td th:text="${venta.fecha}">Fecha</td>
+                        <td th:text="${venta.cliente.nombre}">Nombre</td>
+                        <td th:text="${venta.cliente.apellido}">Apellido</td>
+                        <td th:text="${venta.importeFinal}" class="number" style="text-align: right;">Importe Final</td>
+                    </tr>
+                </tbody>
+            </table>
+            <br />
+            <!-- Tabla de items de la venta -->
+            <table border="2" cellpadding="10" style="border-color:black; text-align:center" width="50%">
+                <thead>
+                    <tr style="background:blue;color:white">
+                        <th>ID</th>
+                        <th>Cantidad</th>
+                        <th>Prenda</th>
+                        <th>Importe</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="item : ${venta.items}">
+                        <td th:text="${item.id}">Item ID</td>
+                        <td th:text="${item.cantidad}">Cantidad</td>
+                        <td th:text="${item.prenda.descripcion}">Prenda</td>
+                        <td th:text="${item.importe}" class="number">Importe</td>
+                    </tr>
+                </tbody>
+            </table>
+        </tr>
+        </tbody>
+    </table>
+    <br />
+
+    <!-- Totales -->
+    <h3>Total Efectivo: <span th:text="${totalEfectivo}"></span></h3>
+    <h3>Total Tarjeta: <span th:text="${totalTarjeta}"></span></h3>
+</div>
+</body>
+</html>
